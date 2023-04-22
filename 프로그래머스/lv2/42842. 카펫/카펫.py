@@ -8,14 +8,15 @@ def solution(brown, yellow):
     grid = brown + yellow
     
     for width in range(grid, 1, -1):
-        if grid % width != 0:
+        #width를 임의로 설정해서 만약 grid = width * height가 될 수 없을 때는 다음으로 넘어간다.
+        if grid % width != 0:  
             continue
         
         height = grid / width
         y = (width - 2) * (height - 2)
         b = grid - y
         
-        if y == yellow and b == brown and width >= height:
+        if y == yellow and b == brown and width >= height: 
             answer.append(width)
             answer.append(height)
     
