@@ -1,4 +1,8 @@
 def solution(brown, yellow):
+    w = ((brown + 4)/2 + (((brown+4)/2)**2 - 4 * (brown+ yellow)) ** 0.5)/2
+    h = ((brown + 4)/2 - (((brown+4)/2)**2 - 4 * (brown+ yellow)) ** 0.5)/2
+    answer = [w, h]
+    '''
     #output: [카펫의 가로, 세로]
     #grid = brown + yellow
     #yellow = (width-2)*(height-2)
@@ -19,5 +23,6 @@ def solution(brown, yellow):
         if y == yellow and b == brown and width >= height: 
             answer.append(width)
             answer.append(height)
+    '''       
     
     return answer
