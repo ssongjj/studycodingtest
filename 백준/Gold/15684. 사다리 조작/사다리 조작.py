@@ -1,54 +1,75 @@
 import sys
-input = sys.stdin.readline
+from itertools import combinations
 
-# 사다리가 놓여져 있을 때 i 번째에 도착할 수 있는지 확인
-# 왼쪽에 사다리가 놓였다면 -1, 오른쪽에 사다리가 놓였다면 +1
-def check():
-    for i in range(n):
-        cur = i
-        for j in range(h):
-            if visited[j][cur]:
-                cur += 1
-            elif cur > 0 and visited[j][cur-1]:
-                cur -= 1
-        if cur != i: #시작 위치로 돌아오지 않았다면
+def input_single(dtype=int):
+    return dtype(sys.stdin.readline().strip())
+
+def input_list(dtype=int):
+    return [dtype(i) for i in sys.stdin.readline().strip().split()]
+
+N, M, H = input_list()
+if M == 0:
+    print(0)
+    exit(0)
+
+L = [[False]*(N+1) for _ in range(H)]
+V = [list(range(1, N+1))] + [[0] * N for _ in range(H)]
+for _ in range(M):
+    i, j = input_list()
+    L[i-1][j] = True 
+for i in range(1, H+1):
+    for j in range(N):
+        if L[i-1][j]:
+            V[i][j] = V[i-1][j-1]
+        elif L[i-1][j+1]:
+            V[i][j] = V[i-1][j+1]
+        else:
+            V[i][j] = V[i-1][j]
+
+W = sum((V[-1][i] == i+1) for i in range(N))
+if W == N:
+    print(0)
+    exit(0)
+if W < N-6:
+    print(-1)
+    exit(0)
+
+E = [(i, j) for i in range(H) for j in range(1, N) if not L[i][j] and not L[i][j-1] and not L[i][j+1]]
+
+def checkLadder(ladders):
+    R = list(range(N+1))
+
+    for i, j in ladders:
+        n1, n2 = V[i+1][j-1], V[i+1][j]
+        R[n1], R[n2] = R[n2], R[n1]
+
+    for n in range(1, 1+N):
+        if R[V[-1][n-1]] != n:
             return False
+
     return True
 
-#dfs를 이용
-#모든 열의 사다리를 타고 이동했을 때 확인
-#사다리를 놓을 수 있는 후보 위치에 다시 사다리를 놓을 수 있는지 확인
-#사다리를 놓을 수 있다면 재귀
-def dfs(cnt, x, y): #cnt와 x행, y행
-    global answer
-    if check():
-        answer = min(answer, cnt)
-        return #최솟값 설정 후 리턴
-    elif cnt == 3 or answer <= cnt:
-        return
+for ladders in combinations(E, 1):
+    if checkLadder(ladders):
+        print(1)
+        exit(0)
 
-    for i in range(x, h):
-        if i == x:
-            s = y  #행이 변경되지 않았다면 지금 탐색 중인 열부터
-        else:
-            s = 0  #행이 변경됐다면 가로선 처음부터
-        for j in range(s, n-1):
-            if not visited[i][j] and not visited[i][j+1]: #오른쪽 사다리가 존재하지 않는 경우
-                if j > 0 and visited[i][j-1]:
-                    continue
-                visited[i][j] = True
-                dfs(cnt+1, i, j+2)
-                visited[i][j] = False
+for ladders in combinations(E, 2):
+    if ladders[0][0]==ladders[1][0] and abs(ladders[0][1]-ladders[1][1]) == 1:
+        continue 
+    if checkLadder(ladders):
+        print(2)
+        exit(0)
 
-n, m, h = map(int, input().split())
-visited = [[False] * (n) for _ in range(h)]  #방문 처리를 해 주기 위헤 존재
+for ladders in combinations(E, 3):
+    if ladders[0][0]==ladders[1][0] and abs(ladders[0][1]-ladders[1][1]) == 1:
+        continue 
+    if ladders[0][0]==ladders[2][0] and abs(ladders[0][1]-ladders[2][1]) == 1:
+        continue 
+    if ladders[1][0]==ladders[2][0] and abs(ladders[1][1]-ladders[2][1]) == 1:
+        continue 
+    if checkLadder(ladders):
+        print(3)
+        exit(0)
 
-
-#양옆에 사다리가 있으면 사다리를 놓을 수 없다.
-for _ in range(m):
-    a, b = map(int, input().split())
-    visited[a-1][b-1] = True #사다리 이미 있기 때문에 방문 처리
-
-answer = 4 #최대 정답값
-dfs(0, 0, 0)
-print(answer if answer < 4 else -1)
+print(-1)
