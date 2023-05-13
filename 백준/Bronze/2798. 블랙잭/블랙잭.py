@@ -1,16 +1,14 @@
-from itertools import combinations
-
 n, m = map(int, input().split())
-card = list(map(int, input().split()))  # n개만큼의 카드 번호를 받는다.
-
-comb_card = list(combinations(card, 3))
+card = sorted(list(map(int, input().split())), reverse=True)  # n개만큼의 카드 번호를 받는다.
 
 result = 0
-card_sum = 0
-for a, b, c in comb_card:
-    card_sum = a + b + c
-    
-    if card_sum <= m:
-        result = max(card_sum, result)
+for i in range(n-2):
+  for j in range(i+1, n-1):
+    for k in range(j+1, n):
+      card_sum = card[i]+card[j]+card[k]
+      if card_sum <= m:
+        if result < card_sum:
+            result = card_sum
+        break
 
 print(result)
