@@ -1,5 +1,4 @@
 def combi_password(start):
-    #암호가 완성되었다면 바로 print
     if len(selected) == l:
         vowel_cnt = sum(1 for char in selected if char in vowels) #모음의 수
         consonant_cnt = len(selected) - vowel_cnt #자음의 수
