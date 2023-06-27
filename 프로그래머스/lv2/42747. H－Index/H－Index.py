@@ -6,5 +6,5 @@ def solution(citations):
         if citation >= len(citations)-i:
             return len(citations)-i
             
-            
+        
     return 0
