@@ -6,6 +6,31 @@ def solution(bridge_length, weight, truck_weights):
     wait_q = deque(truck_weights)
     move_q = deque()
     
+    while wait_q:
+        truck = wait_q.popleft()
+        answer += 1
+        
+        if sum(t[0] for t in move_q) + truck <= weight:
+            move_q.append([truck, 0])
+        else:
+            wait_q.appendleft(truck)
+            
+        for t in move_q:
+            t[1] += 1
+        
+        if move_q[0][1] == bridge_length:
+            move_q.popleft()
+            
+    answer += bridge_length
+        
+    return answer
+
+'''
+1차 코드 (통과)
+    answer = 0
+    wait_q = deque(truck_weights)
+    move_q = deque()
+    
     while wait_q or move_q:
         answer += 1
         
@@ -18,5 +43,4 @@ def solution(bridge_length, weight, truck_weights):
             
         for t in move_q:
             t[1] += 1
-
-    return answer
+'''
