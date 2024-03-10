@@ -1,13 +1,7 @@
-from collections import Counter
+a,b,c = map(int, input().split())
+list=[a,b,c]
 
-v_list = list(map(int, input().split()))
-counter = Counter(v_list)
-
-if len(counter) == 1:
-    answer = 10000 + v_list[0] * 1000
-elif len(counter) == 2:
-    answer = 1000 + counter.most_common(1)[0][0] * 100
-else:
-    answer = max(v_list) * 100
-
-print(answer)
+if a == b == c : print(10000 + a * 1000)
+elif a == b or a == c : print(1000 + a * 100)
+elif b == c : print(1000 + b * 100)
+else : print(max(list) * 100)
