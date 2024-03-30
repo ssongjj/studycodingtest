@@ -1,16 +1,25 @@
-res = []
+import sys
 
 while True:
-    n, m = map(int, input().split())
+    n, m = map(int, sys.stdin.readline().split())
     if n == 0 and m == 0:
         break
-    else:
-        sang_cd = [int(input()) for _ in range(n)]
-        sun_cd = [int(input()) for _ in range(m)]
 
-        sang = set(sang_cd)
-        sun = set(sun_cd)
+    sang_cd = [int(sys.stdin.readline().strip()) for _ in range(n)]
+    sun_cd = [int(sys.stdin.readline().strip()) for _ in range(m)]
 
-        res.append(str(len(sang & sun)))
+    i = 0
+    j = 0
+    cnt = 0
 
-print("\n".join(res))
+    while i < n and j < m:
+        if sang_cd[i] == sun_cd[j]:
+            cnt += 1
+            i += 1
+            j += 1
+        elif sang_cd[i] > sun_cd[j]:
+            j += 1
+        else:
+            i += 1
+
+    print(cnt)
