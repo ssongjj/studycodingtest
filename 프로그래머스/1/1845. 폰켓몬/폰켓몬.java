@@ -2,17 +2,16 @@ import java.util.HashSet;
 
 class Solution {
     public int solution(int[] nums) {
-        
-        HashSet<Integer> hs = new HashSet<>();
+        HashSet<Integer> monsters = new HashSet<>();
         
         for(int i = 0; i < nums.length; i++){
-            hs.add(nums[i]);
+            monsters.add(nums[i]);
         }
         
-        if(hs.size() > nums.length/2)
+        if(monsters.size() > nums.length/2)
             return nums.length/2;
-
-        return hs.size();
+        
+        return monsters.size();
     }
 }
 
